@@ -7,5 +7,6 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/seasons', 'SeasonController::index');
+$routes->get('/seasons/(:num)', 'SeasonController::matches/$1');
 
 

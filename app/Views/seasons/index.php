@@ -15,24 +15,32 @@ $this->section("content"); ?>
 
         foreach ($seasons as $s) {
             $year = $s['start'];
-            $grouped[$year][] = $s;
+
+            $grouped[$year][]= $s;
+
         }
 
         foreach ($grouped as $year => $leagues):
             $uniqueId = 'row-' . md5($year);
         ?>
             <tr class="main-row" data-toggle="<?= $uniqueId ?>" style="cursor:pointer;">
-                <td><strong><?= esc($year) ?></strong> <span class="arrow">&#x25BC;</span></td>
+                <td>
+            <strong><?= esc($year) ?></strong> <span class="arrow">&#x25BC;</span>
+        </a></td>
                 <td colspan="2">Liga</td>
             </tr>
 
             <?php foreach ($leagues as $league): ?>
                 <tr class="sub-row <?= $uniqueId ?>" style="display:none;">
                     <td></td>
-                    <td><?= esc($league['name']) ?></td>
-                    <td><?= esc($league['level']) ?></td>
-                </tr>
-            <?php endforeach; ?>
+            <td>
+            <a href="<?= base_url("seasons/" . $league['season_id']) ?>">
+                <?= esc($league['name']) ?>
+            </a>
+            </td>
+        <td><?= esc($league['level']) ?></td>
+    </tr>
+<?php endforeach; ?>
         <?php endforeach; ?>
     </tbody>
 </table>
@@ -45,10 +53,10 @@ $this->section("content"); ?>
             rows.forEach(r => {
                 if (r.style.display === 'table-row') {
                     r.style.display = 'none';
-                    row.querySelector('.arrow').textContent = '▼';
+                    row.querySelector('.arrow').textContent = '↓';
                 } else {
                     r.style.display = 'table-row';
-                    row.querySelector('.arrow').textContent = '▲';
+                    row.querySelector('.arrow').textContent = '↑';
                 }
             });
         });
