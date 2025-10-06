@@ -8,6 +8,8 @@ use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use App\Models\NavigationModel;
+
 
 /**
  * Class BaseController
@@ -46,13 +48,46 @@ abstract class BaseController extends Controller
     /**
      * @return void
      */
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        // Do Not Edit This Line
-        parent::initController($request, $response, $logger);
 
-        // Preload any models, libraries, etc, here.
+public function initController(\CodeIgniter\HTTP\RequestInterface $request, \CodeIgniter\HTTP\ResponseInterface $response, \Psr\Log\LoggerInterface $logger)
+{
+    parent::initController($request, $response, $logger);
 
-        // E.g.: $this->session = service('session');
+    $navModel = new \App\Models\NavigationModel();
+
+    $isAdmin = session()->get('is_admin') === true;
+
+    $visibleIn = ['frontend', 'both'];
+    if ($isAdmin) {
+        $visibleIn[] = 'admin';
     }
+
+    $this->data['navLeft'] = $navModel
+        ->whereIn('visible_in', $visibleIn)
+        ->where('position', 'left')
+        ->orderBy('order', 'ASC')
+        ->findAll();
+
+    // Základní pravé položky z DB
+    $navRight = $navModel
+        ->whereIn('visible_in', $visibleIn)
+        ->where('position', 'right')
+        ->orderBy('order', 'ASC')
+        ->findAll();
+
+    // Dynamicky přidat login/logout
+    if ($isAdmin) {
+        $navRight[] = [
+            'title' => 'Odhlásit',
+            'url'   => '/krajca/fotbal/logout',
+        ];
+    } else {
+        $navRight[] = [
+            'title' => 'Přihlásit',
+            'url'   => '/krajca/fotbal/login',
+        ];
+    }
+
+    $this->data['navRight'] = $navRight;
+}
 }

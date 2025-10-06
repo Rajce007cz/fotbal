@@ -1,13 +1,15 @@
-CREATE TABLE navbar (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    label VARCHAR(50) NOT NULL,
-    url VARCHAR(100) NOT NULL,
-    visible_for ENUM('all', 'authenticated') NOT NULL DEFAULT 'all',
-    display_order INT NOT NULL
+CREATE TABLE `navigation` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(255) NOT NULL,
+  `url` VARCHAR(255) NOT NULL,
+  `position` ENUM('left', 'right') NOT NULL DEFAULT 'left',
+  `visible_in` ENUM('frontend', 'admin', 'both') NOT NULL DEFAULT 'frontend',
+  `order` INT DEFAULT 0
 );
 
-INSERT INTO navbar (label, url, visible_for, display_order) VALUES
-('Home', '/', 'all', 1),
-('Sezóny', '/sezony', 'all', 2),
-('Týmy', '/tymy', 'all', 3),
-('Administrace', '/admin', 'authenticated', 4);
+INSERT INTO `navigation` (`title`, `url`, `position`, `visible_in`, `order`) VALUES
+('Home', '/', 'left', 'frontend', 1),
+('Sezóny', '/seasons', 'left', 'frontend', 2),
+('Týmy', '/teams', 'left', 'frontend', 3),
+('Správa článků', '/admin/articles', 'left', 'admin', 1),
+('Odhlásit', '/logout', 'right', 'admin', 2);

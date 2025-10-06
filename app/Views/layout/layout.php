@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <?= $this->include("layout/assets");?>
-        <?= $this->include("layout/navbar");?>
+        <?= view('layout/navbar', $this->data) ?>
     </head>
     <body>
         <div class="container">
