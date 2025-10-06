@@ -1,3 +1,6 @@
+<?php
+$this->extend("layout/layout");
+$this->section("content"); ?>
 <h1>Upravit článek</h1>
 
 <form action="<?= base_url('admin/articles/update/' . $article['id']) ?>" method="post" enctype="multipart/form-data">
@@ -10,7 +13,7 @@
 
     <div class="mb-3">
         <label for="content" class="form-label">Obsah</label>
-        <textarea class="form-control" id="content" name="content" rows="6" required><?= esc($article['content']) ?></textarea>
+        <textarea class="form-control" id="content" name="content" rows="6" required><?= esc($article['text']) ?></textarea>
     </div>
 
     <div class="mb-3">
@@ -40,3 +43,5 @@
     <button type="submit" class="btn btn-primary">Uložit změny</button>
     <a href="<?= base_url('admin/articles') ?>" class="btn btn-secondary">Zpět</a>
 </form>
+<?php 
+  $this->endSection();?>

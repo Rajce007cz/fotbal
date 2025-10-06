@@ -1,3 +1,6 @@
+<?php
+$this->extend("layout/layout");
+$this->section("content"); ?>
 <h1>Vytvořit nový článek</h1>
 
 <form action="<?= base_url('admin/articles/store') ?>" method="post" enctype="multipart/form-data">
@@ -31,3 +34,5 @@
     <button type="submit" class="btn btn-success">Uložit</button>
     <a href="<?= base_url('admin/articles') ?>" class="btn btn-secondary">Zpět</a>
 </form>
+<?php 
+  $this->endSection();?>

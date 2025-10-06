@@ -12,7 +12,15 @@ class ArticleModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+
+    // Důležité: vyplň pole, které chceš povolit k zápisu
+    protected $allowedFields    = [
+        'title',
+        'text',
+        'date',
+        'photo',
+        'top'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;

@@ -1,3 +1,6 @@
+<?php
+$this->extend("layout/layout");
+$this->section("content"); ?>
 <h1>Správa článků</h1>
 
 <?php if(session()->getFlashdata('success')): ?>
@@ -37,3 +40,5 @@
         <?php endif; ?>
     </tbody>
 </table>
+<?php 
+  $this->endSection();?>
