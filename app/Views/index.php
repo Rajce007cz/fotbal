@@ -6,7 +6,6 @@ $this->section("content"); ?>
 <div class="container mt-4">
     <div class="row g-2">
 
-        <!-- 🟦 Hlavní dlaždice (nejnovější) -->
         <?php if (!empty($mainTile)): ?>
             <div class="col-md-6">
     <a href="<?= esc($mainTile['id']) ?>" class="d-block position-relative ratio ratio-1x1">
@@ -14,7 +13,6 @@ $this->section("content"); ?>
              alt="<?= esc($mainTile['title']) ?>"
              class="img-fluid object-fit-cover w-100 h-100 rounded">
 
-        <!-- Překryv přes celý obrázek, texty dole -->
         <div class="position-absolute top-0 start-0 end-0 bottom-0 bg-dark bg-opacity-50 text-white p-3 d-flex flex-column justify-content-end rounded">
             <div class="fw-semibold"><?= esc($mainTile['title']) ?></div>
             <div class="small mt-2"><?= esc($mainTile['formattedDate']) ?></div>
@@ -24,7 +22,6 @@ $this->section("content"); ?>
 
         <?php endif; ?>
 
-        <!-- 🟩 Vedlejší dlaždice (další 4) -->
         <div class="col-md-6">
     <div class="row g-2">
         <?php foreach ($secondaryTiles as $tile): ?>
@@ -34,7 +31,6 @@ $this->section("content"); ?>
              alt="<?= esc($tile['title']) ?>"
              class="w-100 h-100 object-fit-cover position-absolute top-0 start-0">
 
-        <!-- Překryv přes celý obrázek, ale obsah dole -->
         <div class="position-absolute top-0 start-0 end-0 bottom-0 text-white p-3 d-flex flex-column justify-content-end bg-dark bg-opacity-50">
             <div class="fw-semibold"><?= esc($tile['title']) ?></div>
             <div class="small mt-2"><?= esc($tile['formattedDate']) ?></div>

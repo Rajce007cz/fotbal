@@ -20,7 +20,7 @@ class SeasonController extends BaseController
     $data["seasons"] = $this->seasonModel
         ->join('league_season', 'season.id = league_season.id_season', "inner")
         ->join('league', 'league_season.id_league = league.id', "inner")
-        ->select('league_season.id as season_id, league.id as league_id, league.name, league.level, season.start, season.finish')
+        ->select('league_season.id as season_id, league.id as league_id, league.name, league.level, season.start, season.finish, league.logo')
         ->orderBy("level", "ASC")
         ->findAll();
 
@@ -42,10 +42,17 @@ class SeasonController extends BaseController
     $builder->where('m.id_league_season', $id);
     $builder->orderBy('m.round', 'DESC');
 
-    $query = $builder->get();
-    $matches = $query->getResultArray();
+    $query = $builder->get(); 
+$matches = $query->getResultArray();
 
-    return view('seasons/season_matches', ['matches' => $matches]);
+// Předání dat do view pomocí array_merge
+$data = [
+    'matches' => $matches
+];
+
+$viewData = array_merge($this->data, $data);
+
+return view('seasons/season_matches', $viewData);
 }
 public function match($id)
 {
@@ -58,14 +65,20 @@ public function match($id)
     $builder->join('team as home', 'g.home = home.id');
     $builder->join('team as away', 'g.away = away.id');
     $builder->where('g.id', $id);
+$match = $builder->get()->getRowArray();
 
-    $match = $builder->get()->getRowArray();
-
-    if (!$match) {
-        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Zápas s ID $id nenalezen.");
-    }
-
-    return view('seasons/match', ['match' => $match]);
+if (!$match) {
+    throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Zápas s ID $id nenalezen.");
 }
 
+$data = [
+    'match' => $match
+];
+
+// Sloučíme s případnými výchozími daty (např. title, menu, apod.)
+$viewData = array_merge($this->data, $data);
+
+return view('seasons/match', $viewData);
+
+}
 }
