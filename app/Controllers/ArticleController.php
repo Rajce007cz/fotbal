@@ -87,12 +87,28 @@ public function store()
 
     $data = $this->request->getPost();
 
-    $this->articleModel->insert([
+    $insertData = [
         'title'   => $data['title'],
         'content' => $data['content'],
         'date'    => strtotime($data['date']),
         'top'     => isset($data['top']) ? 1 : 0
-    ]);
+    ];
+
+    // ZPRACUJEME NAHRANÝ OBRÁZEK
+    $image = $this->request->getFile('photo');
+
+    if ($image && $image->isValid() && !$image->hasMoved()) {
+        // Vygeneruj unikátní název souboru
+        $newName = $image->getRandomName();
+
+        // Přesuň soubor do složky
+        $image->move(FCPATH . 'img/sigma', $newName);
+
+        // Přidej název obrázku do dat
+        $insertData['photo'] = $newName;
+    }
+
+    $this->articleModel->insert($insertData);
 
     return redirect()->to('/admin/articles')->with('success', 'Článek byl vytvořen.');
 }
@@ -112,12 +128,23 @@ public function update($id)
 
     $data = $this->request->getPost();
 
-    $this->articleModel->update($id, [
+    $updateData = [
         'title'   => $data['title'],
         'content' => $data['content'],
         'date'    => strtotime($data['date']),
         'top'     => isset($data['top']) ? 1 : 0
-    ]);
+    ];
+
+    // ZPRACUJEME NAHRANÝ OBRÁZEK
+    $image = $this->request->getFile('photo');
+
+    if ($image && $image->isValid() && !$image->hasMoved()) {
+        $newName = $image->getRandomName();
+        $image->move(FCPATH . 'img/sigma', $newName);
+        $updateData['photo'] = $newName; // pouze přepíšeme v DB, starý nesmažeme
+    }
+
+    $this->articleModel->update($id, $updateData);
 
     return redirect()->to('/admin/articles')->with('success', 'Článek byl aktualizován.');
 }
